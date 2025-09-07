@@ -9,6 +9,19 @@ class NoteApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return MaterialApp(
+      title: 'Note Taking App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Note Taking App'),
+        ),
+        body: Center(
+          child: Text('Welcome to the Note Taking App!'),
+        ),
+      ),
+    );
   }
 }
