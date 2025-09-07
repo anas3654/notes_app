@@ -19,7 +19,7 @@ class NoteApp extends StatelessWidget {
           title: Text('Note Taking App'),
         ),
         body: Center(
-          child: Text('Welcome to the Note Taking App!'),
+          child: Text('Welcome to the Note Taking App!', style: TextStyle(fontSize: 24)),
         ),
       ),
     );
