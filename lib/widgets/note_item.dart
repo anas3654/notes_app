@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-class NoteItem extends StatelessWidget {
+import '../model/note_model.dart';
+
+class NoteItem extends StatefulWidget {
   const NoteItem({super.key});
 
+  @override
+  State<NoteItem> createState() => _NoteItemState();
+}
+
+class _NoteItemState extends State<NoteItem> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -11,63 +18,71 @@ class NoteItem extends StatelessWidget {
         physics: BouncingScrollPhysics(),
         padding: EdgeInsets.only(top: 2.h),
         itemBuilder: (context, index) {
-          return Container(
-            padding: EdgeInsets.only(top: 1.h, left: 1.w, bottom: 1.h),
-            decoration: BoxDecoration(
-              color: Colors.grey.shade800,
-              borderRadius: BorderRadius.circular(12.sp),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                ListTile(
-                  title: Text(
-                    'Meeting Notes',
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.bold,
+          return GestureDetector(
+            onTap: (){
+              Navigator.pushNamed(context, '/noteDetails',arguments: notes[index] );
+            },
+            child: Container(
+              padding: EdgeInsets.only(top: 1.h, left: 1.w, bottom: 1.h),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade800,
+                borderRadius: BorderRadius.circular(12.sp),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  ListTile(
+                    title: Text(
+                      notes[index].title,
+                      style: TextStyle(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    subtitle: Text(
+                      notes[index].content,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: Colors.grey.shade400,
+                      ),
+                    ),
+                    trailing: GestureDetector(
+                      onTap: () {
+                        notes.removeAt(index);
+                        setState(() {});
+                      },
+                      child: Icon(
+                        Icons.delete,
+                        color: Colors.grey.shade400,
+                        size: 21.sp,
+                      ),
                     ),
                   ),
-                  subtitle: Text(
-                    'Discuss project timeline and deliverables. uiadshpuifasdui;fhuijfhuiabfijdbbuijcbnbiujfhhcbudsjfnbndusifhjdnihfbui',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      color: Colors.grey.shade400,
+                  Padding(
+                    padding: EdgeInsets.only(right: 4.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          "${notes[index].date.year}-${notes[index].date.month}-${notes[index].date.day}",
+                          style: TextStyle(
+                              fontSize: 13.sp, color: Colors.grey.shade400),
+                        ),
+                        SizedBox(
+                          width: 2.w,
+                        ),
+                        Text(
+                          "${notes[index].date.hour}:${notes[index].date.minute}",
+                          style: TextStyle(
+                              fontSize: 13.sp, color: Colors.grey.shade400),
+                        ),
+                      ],
                     ),
                   ),
-                  trailing: GestureDetector(
-                    onTap: () {},
-                    child: Icon(
-                      Icons.delete,
-                      color: Colors.grey.shade400,
-                      size: 21.sp,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(right: 4.w),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        "12:30 PM",
-                        style: TextStyle(
-                            fontSize: 13.sp, color: Colors.grey.shade400),
-                      ),
-                      SizedBox(
-                        width: 2.w,
-                      ),
-                      Text(
-                        "May 12, 2024",
-                        style: TextStyle(
-                            fontSize: 13.sp, color: Colors.grey.shade400),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },
@@ -76,8 +91,10 @@ class NoteItem extends StatelessWidget {
             height: 2.h,
           );
         },
-        itemCount: 10,
+        itemCount: notes.length,
       ),
     );
   }
 }
+
+
