@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:note_app/views/home_views.dart';
+import 'package:sizer/sizer.dart';
 
 void main() {
   runApp(const NoteApp());
@@ -9,19 +11,17 @@ class NoteApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Note Taking App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Note Taking App'),
-        ),
-        body: Center(
-          child: Text('Welcome to the Note Taking App!', style: TextStyle(fontSize: 24)),
-        ),
-      ),
-    );
+  return Sizer(
+      builder: (context, orientation, deviceType){
+        return MaterialApp(
+            title: 'Note Taking App',
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              brightness: Brightness.dark
+            ),
+            home: HomeScreen()
+        );
+    });
+
   }
 }
