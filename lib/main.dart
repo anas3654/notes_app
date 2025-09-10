@@ -21,7 +21,7 @@ class NoteApp extends StatelessWidget {
               brightness: Brightness.dark,
               textSelectionTheme: TextSelectionThemeData(
                 cursorColor: Colors.white,
-                selectionColor: Colors.white.withOpacity(0.3),
+                selectionColor: Colors.white.withValues(alpha: 0.3),
                 selectionHandleColor: Colors.white,
               ),
             ),

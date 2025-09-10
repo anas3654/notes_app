@@ -12,9 +12,9 @@ class CustomFloatingActionButton extends StatelessWidget {
       padding: EdgeInsets.only(bottom: 2.h),
       child: FloatingActionButton(
         onPressed: () {
-           final noteModel = NoteModel(title: '', content: '', date: DateTime.now());
+           final noteModel = NoteModel(title: '', content: '', date: DateTime.now(), isNew: true);
           Navigator.pushNamed(context, '/noteDetails',arguments:noteModel );
-          notes.add(noteModel);
+          // notes.add(noteModel);
         },
         backgroundColor: Colors.black,
         child: Icon(

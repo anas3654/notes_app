@@ -17,6 +17,12 @@ class _NoteItemState extends State<NoteItem> {
       child: ListView.separated(
         physics: BouncingScrollPhysics(),
         padding: EdgeInsets.only(top: 2.h),
+        separatorBuilder: (context, index) {
+          return SizedBox(
+            height: 2.h,
+          );
+        },
+        itemCount: notes.length,
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: (){
@@ -86,12 +92,6 @@ class _NoteItemState extends State<NoteItem> {
             ),
           );
         },
-        separatorBuilder: (context, index) {
-          return SizedBox(
-            height: 2.h,
-          );
-        },
-        itemCount: notes.length,
       ),
     );
   }
