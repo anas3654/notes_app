@@ -1,100 +1,57 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
+import '../cubits/get_notes/get_notes_cubit.dart';
+import '../cubits/get_notes/get_notes_state.dart';
+import '../models/note_model.dart';
+import 'custom_separated_list_view.dart';
 
-import '../model/note_model.dart';
-
-class NoteItem extends StatefulWidget {
-  const NoteItem({super.key});
+class NoteItems extends StatefulWidget {
+  const NoteItems({super.key});
 
   @override
-  State<NoteItem> createState() => _NoteItemState();
+  State<NoteItems> createState() => _NoteItemsState();
 }
 
-class _NoteItemState extends State<NoteItem> {
+class _NoteItemsState extends State<NoteItems> {
+  List<NoteModel> notes = [];
+
+  @override
+  void initState() {
+    super.initState();
+    notes = BlocProvider.of<GetNotesCubit>(context).fetchNotes();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.separated(
-        physics: BouncingScrollPhysics(),
-        padding: EdgeInsets.only(top: 2.h),
-        separatorBuilder: (context, index) {
-          return SizedBox(
-            height: 2.h,
-          );
-        },
-        itemCount: notes.length,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: (){
-              Navigator.pushNamed(context, '/noteDetails',arguments: notes[index] );
-            },
-            child: Container(
-              padding: EdgeInsets.only(top: 1.h, left: 1.w, bottom: 1.h),
-              decoration: BoxDecoration(
-                color: Colors.grey.shade800,
-                borderRadius: BorderRadius.circular(12.sp),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  ListTile(
-                    title: Text(
-                      notes[index].title,
-                      style: TextStyle(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    subtitle: Text(
-                      notes[index].content,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: Colors.grey.shade400,
-                      ),
-                    ),
-                    trailing: GestureDetector(
-                      onTap: () {
-                        notes.removeAt(index);
-                        setState(() {});
-                      },
-                      child: Icon(
-                        Icons.delete,
-                        color: Colors.grey.shade400,
-                        size: 21.sp,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 4.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          "${notes[index].date.year}-${notes[index].date.month}-${notes[index].date.day}",
-                          style: TextStyle(
-                              fontSize: 13.sp, color: Colors.grey.shade400),
-                        ),
-                        SizedBox(
-                          width: 2.w,
-                        ),
-                        Text(
-                          "${notes[index].date.hour}:${notes[index].date.minute}",
-                          style: TextStyle(
-                              fontSize: 13.sp, color: Colors.grey.shade400),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      ),
-    );
+    return BlocBuilder<GetNotesCubit, GetNotesState>(
+    builder: (context, state) {
+      if (state is GetNotesSuccess) {
+        notes = state.notes;
+      } else {
+        notes = [];
+      }
+      return notes.isEmpty
+          ? Column(
+              children: [
+                SizedBox(
+                  height: 20.h,
+                ),
+                Icon(
+                  Icons.note_add_outlined,
+                  size: 40.sp,
+                ),
+                Text(
+                  'No Notes Yet',
+                  style:
+                      TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w700),
+                ),
+              ],
+            )
+          : Expanded(
+              child: CustomSeparatedListView(notes: notes),
+            );
+    });
   }
 }
-
 
